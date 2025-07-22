@@ -1,0 +1,11 @@
+savePrefix: ""
+engineStrict: true
+
+strictDepBuilds: true
+ignoredBuiltDependencies:
+  - "core-js"
+
+onlyBuiltDependencies:
+  # Required to install platform-specific binary.
+  # https://github.com/swc-project/swc/blob/main/packages/core/src/postinstall.ts
+  - "@swc/core"

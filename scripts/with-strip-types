@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+export NODE_OPTIONS="--disable-warning ExperimentalWarning --experimental-strip-types"
+
+"$@"

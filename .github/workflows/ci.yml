@@ -1,0 +1,63 @@
+name: "CI"
+
+on:
+  push:
+    branches:
+      - "master"
+  pull_request:
+  workflow_dispatch:
+
+env:
+  FORCE_COLOR: "3"
+  HUSKY: "0"
+
+concurrency: "${{ github.workflow }}-${{ github.ref }}"
+
+jobs:
+  format:
+    name: "Check Format"
+    runs-on: "ubuntu-22.04-arm"
+    steps:
+      - name: "Checkout Repository"
+        uses: "actions/checkout@v4"
+
+      - name: "Install pnpm"
+        uses: "pnpm/action-setup@v4"
+
+      - name: "Setup Node.js"
+        uses: "actions/setup-node@v4"
+        with:
+          node-version-file: ".node-version"
+          cache: "pnpm"
+
+      - name: "Install Dependencies"
+        run: |
+          pnpm install --frozen-lockfile
+
+      - name: "Check Format"
+        run: |
+          pnpm format:check
+
+  build:
+    name: "Build Library"
+    runs-on: "ubuntu-22.04-arm"
+    steps:
+      - name: "Checkout Repository"
+        uses: "actions/checkout@v4"
+
+      - name: "Install pnpm"
+        uses: "pnpm/action-setup@v4"
+
+      - name: "Setup Node.js"
+        uses: "actions/setup-node@v4"
+        with:
+          node-version-file: ".node-version"
+          cache: "pnpm"
+
+      - name: "Install Dependencies"
+        run: |
+          pnpm install --frozen-lockfile
+
+      - name: "Build Library"
+        run: |
+          pnpm build
