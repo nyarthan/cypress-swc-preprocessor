@@ -9,3 +9,7 @@ onlyBuiltDependencies:
   # Required to install platform-specific binary.
   # https://github.com/swc-project/swc/blob/main/packages/core/src/postinstall.ts
   - "@swc/core"
+
+  # Required to install platform-specific binary.
+  # https://github.com/cypress-io/cypress/blob/master/cli/lib/tasks/install.js#L4
+  - "cypress"

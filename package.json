@@ -35,7 +35,8 @@
     "format": "pnpm prettier --write .",
     "build": "rslib build",
     "release": "pnpm publish --access public --provenance",
-    "prerelease": "pnpm build"
+    "prerelease": "pnpm build",
+    "cypress:run": "cypress run"
   },
   "dependencies": {
     "@swc/core": "1.13.1"
@@ -51,6 +52,7 @@
     "@rslib/core": "0.6.2",
     "@types/node": "22.14.1",
     "conventional-changelog-atom": "5.0.0",
+    "cypress": "14.5.2",
     "husky": "9.1.7",
     "prettier": "3.5.3",
     "prettier-plugin-astro": "0.14.1",
