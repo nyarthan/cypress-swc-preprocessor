@@ -7,6 +7,9 @@ import { writeFile } from "node:fs/promises";
 
 import { transformFile } from "@swc/core";
 import { watch } from "chokidar";
+import {debuglog} from 'node:util'
+
+const log = debuglog('cypress-swc-preprocessor')
 
 type CypressFile = {
   filePath: string;
@@ -29,8 +32,12 @@ export function swcPreprocessor(): Preprocessor {
 function getPreprocessor(cache: Cache, watchers: Watchers): Preprocessor {
   return async function preprocess(file) {
     const cachedOutputPath = cache.get(file.filePath);
-    if (cachedOutputPath) return cachedOutputPath;
+    if (cachedOutputPath) {
+      log('Cache hit. Replaying output for %s', file.filePath);
+      return cachedOutputPath
+    };
 
+    log('Cache miss. Building %s', file.filePath)
     await build(file.filePath, { outputPath: file.outputPath });
     cache.set(file.filePath, file.outputPath);
 
@@ -45,6 +52,7 @@ function getPreprocessor(cache: Cache, watchers: Watchers): Preprocessor {
     const watcher = watch(file.filePath, { ignoreInitial: true });
 
     watcher.on("change", async () => {
+      log('File changed. Rebuilding %s', file.filePath)
       await build(file.filePath, { outputPath: file.outputPath });
       file.emit("rerun");
     });
@@ -54,6 +62,7 @@ function getPreprocessor(cache: Cache, watchers: Watchers): Preprocessor {
     file.on("close", () => {
       const watcher = watchers.get(file.filePath);
       if (watcher) {
+        log('File closed. Stopping watcher for %s', file.filePath)
         watcher.close();
         watchers.delete(file.filePath);
       }
