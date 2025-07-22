@@ -36,10 +36,12 @@
     "build": "rslib build",
     "release": "pnpm publish --access public --provenance",
     "prerelease": "pnpm build",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "cypress:open": "cypress open"
   },
   "dependencies": {
-    "@swc/core": "1.13.1"
+    "@swc/core": "1.13.1",
+    "chokidar": "4.0.3"
   },
   "devDependencies": {
     "@changesets/cli": "2.28.1",
